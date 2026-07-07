@@ -1,0 +1,147 @@
+@import "tailwindcss";
+
+:root {
+  --background: #020617;
+  --foreground: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Background 1: Aurora Glow */
+
+.bg-aurora-glow {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(139, 92, 246, 0.8), transparent 30%),
+    radial-gradient(circle at 80% 30%, rgba(6, 182, 212, 0.7), transparent 35%),
+    radial-gradient(circle at 50% 80%, rgba(236, 72, 153, 0.5), transparent 35%),
+    #020617;
+  animation: auroraMove 8s ease-in-out infinite alternate;
+}
+
+@keyframes auroraMove {
+  from {
+    filter: hue-rotate(0deg) blur(0px);
+    transform: scale(1);
+  }
+
+  to {
+    filter: hue-rotate(45deg) blur(2px);
+    transform: scale(1.08);
+  }
+}
+
+/* Background 2: Neon Grid */
+
+.bg-neon-grid {
+  background-color: #020617;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.25) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.25) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(139, 92, 246, 0.4), transparent 45%);
+  background-size: 36px 36px, 36px 36px, 100% 100%;
+  animation: gridMove 12s linear infinite;
+}
+
+@keyframes gridMove {
+  from {
+    background-position: 0 0, 0 0, center;
+  }
+
+  to {
+    background-position: 36px 36px, 36px 36px, center;
+  }
+}
+
+/* Background 3: Soft Blobs */
+
+.bg-soft-blobs {
+  background:
+    radial-gradient(circle at 25% 30%, rgba(251, 113, 133, 0.85), transparent 28%),
+    radial-gradient(circle at 75% 35%, rgba(96, 165, 250, 0.85), transparent 30%),
+    radial-gradient(circle at 50% 80%, rgba(52, 211, 153, 0.75), transparent 35%),
+    #0f172a;
+  animation: blobFloat 9s ease-in-out infinite alternate;
+}
+
+@keyframes blobFloat {
+  from {
+    background-position: 0 0;
+    filter: blur(0px);
+  }
+
+  to {
+    background-position: 20px -30px;
+    filter: blur(3px);
+  }
+}
+
+/* Background 4: Star Field */
+
+.bg-star-field {
+  background-color: #020617;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.9) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+    radial-gradient(circle at center, rgba(30, 64, 175, 0.5), transparent 55%);
+  background-size: 24px 24px, 60px 60px, 100% 100%;
+  background-position: 0 0, 20px 30px, center;
+  animation: starDrift 16s linear infinite;
+}
+
+@keyframes starDrift {
+  from {
+    background-position: 0 0, 20px 30px, center;
+  }
+
+  to {
+    background-position: 100px 100px, 140px 160px, center;
+  }
+}
+
+/* Background 5: Mesh Gradient */
+
+.bg-mesh-gradient {
+  background:
+    radial-gradient(circle at 15% 20%, #f97316, transparent 30%),
+    radial-gradient(circle at 85% 20%, #8b5cf6, transparent 32%),
+    radial-gradient(circle at 50% 85%, #06b6d4, transparent 34%),
+    linear-gradient(135deg, #020617, #111827);
+  animation: meshShift 10s ease-in-out infinite alternate;
+}
+
+@keyframes meshShift {
+  from {
+    filter: saturate(1);
+    transform: scale(1);
+  }
+
+  to {
+    filter: saturate(1.4);
+    transform: scale(1.06);
+  }
+}
+
+/* Accessibility: reduce animation for users who prefer less motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-aurora-glow,
+  .bg-neon-grid,
+  .bg-soft-blobs,
+  .bg-star-field,
+  .bg-mesh-gradient {
+    animation: none;
+  }
+}
