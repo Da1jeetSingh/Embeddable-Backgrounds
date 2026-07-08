@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Background } from "@/app/data/backgrounds";
 import { generateEmbedCode } from "@/app/lib/embed";
 import CopyButton from "./CopyButton";
@@ -11,15 +12,17 @@ export default function BackgroundCard({ background }: BackgroundCardProps) {
 
   return (
     <article className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/20">
-      <div className="relative h-56 overflow-hidden">
-        <div className={`absolute inset-0 ${background.cssClass}`} />
+      <Link href={`/backgrounds/${background.slug}`}>
+        <div className="relative h-56 overflow-hidden">
+          <div className={`absolute inset-0 ${background.cssClass}`} />
 
-        <div className="absolute inset-0 bg-black/10" />
+          <div className="absolute inset-0 bg-black/10" />
 
-        <div className="absolute left-4 top-4 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white backdrop-blur">
-          {background.access === "free" ? "Free" : "Pro"}
+          <div className="absolute left-4 top-4 rounded-full bg-black/40 px-3 py-1 text-xs font-medium text-white backdrop-blur">
+            {background.access === "free" ? "Free" : "Pro"}
+          </div>
         </div>
-      </div>
+      </Link>
 
       <div className="space-y-4 p-5">
         <div>
@@ -49,10 +52,21 @@ export default function BackgroundCard({ background }: BackgroundCardProps) {
           </code>
         </div>
 
-        <div className="flex items-center justify-between">
-          <span className="text-xs text-slate-500">
-            Type: {background.type.toUpperCase()}
-          </span>
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <Link
+            href={`/backgrounds/${background.slug}`}
+            className="rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
+          >
+            Preview
+          </Link>
+
+          <Link
+            href={`/embed/${background.slug}`}
+            target="_blank"
+            className="rounded-xl border border-cyan-400/30 px-4 py-2 text-sm font-semibold text-cyan-200 hover:bg-cyan-400/10"
+          >
+            Open Embed
+          </Link>
 
           <CopyButton text={embedCode} />
         </div>
