@@ -14,7 +14,7 @@ export default function HomePage() {
           </div>
 
           <div className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
-            <a href="#backgrounds" className="hover:text-white">
+            <a href="/explore" className="hover:text-white">
               Explore
             </a>
             <a href="#how-it-works" className="hover:text-white">
@@ -48,7 +48,7 @@ export default function HomePage() {
 
             <div className="mt-8 flex flex-col gap-4 sm:flex-row">
               <a
-                href="#backgrounds"
+                href="/explore"
                 className="rounded-2xl bg-violet-500 px-6 py-3 text-center font-semibold text-white hover:bg-violet-400"
               >
                 Explore Backgrounds
