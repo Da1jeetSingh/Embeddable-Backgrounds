@@ -20,6 +20,9 @@ export default function HomePage() {
             <a href="/create" className="hover:text-white">
               Create
             </a>
+            <a href="/admin" className="hover:text-white">
+              Admin
+            </a>
             <a href="#how-it-works" className="hover:text-white">
               How it works
             </a>
