@@ -145,3 +145,53 @@ body {
     animation: none;
   }
 }
+
+/* Customizable versions of existing backgrounds */
+
+.bg-aurora-glow {
+  background:
+    radial-gradient(circle at 20% 20%, var(--embed-primary, rgba(139, 92, 246, 0.8)), transparent 30%),
+    radial-gradient(circle at 80% 30%, var(--embed-secondary, rgba(6, 182, 212, 0.7)), transparent 35%),
+    radial-gradient(circle at 50% 80%, var(--embed-accent, rgba(236, 72, 153, 0.5)), transparent 35%),
+    #020617;
+  animation-duration: var(--embed-duration, 8s);
+}
+
+.bg-neon-grid {
+  background-color: #020617;
+  background-image:
+    linear-gradient(var(--embed-secondary, rgba(34, 211, 238, 0.25)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--embed-secondary, rgba(34, 211, 238, 0.25)) 1px, transparent 1px),
+    radial-gradient(circle at center, var(--embed-primary, rgba(139, 92, 246, 0.4)), transparent 45%);
+  background-size: 36px 36px, 36px 36px, 100% 100%;
+  animation-duration: var(--embed-duration, 12s);
+}
+
+.bg-soft-blobs {
+  background:
+    radial-gradient(circle at 25% 30%, var(--embed-accent, rgba(251, 113, 133, 0.85)), transparent 28%),
+    radial-gradient(circle at 75% 35%, var(--embed-primary, rgba(96, 165, 250, 0.85)), transparent 30%),
+    radial-gradient(circle at 50% 80%, var(--embed-secondary, rgba(52, 211, 153, 0.75)), transparent 35%),
+    #0f172a;
+  animation-duration: var(--embed-duration, 9s);
+}
+
+.bg-star-field {
+  background-color: #020617;
+  background-image:
+    radial-gradient(circle, var(--embed-primary, rgba(255, 255, 255, 0.9)) 1px, transparent 1px),
+    radial-gradient(circle, var(--embed-secondary, rgba(255, 255, 255, 0.6)) 1px, transparent 1px),
+    radial-gradient(circle at center, var(--embed-accent, rgba(30, 64, 175, 0.5)), transparent 55%);
+  background-size: 24px 24px, 60px 60px, 100% 100%;
+  background-position: 0 0, 20px 30px, center;
+  animation-duration: var(--embed-duration, 16s);
+}
+
+.bg-mesh-gradient {
+  background:
+    radial-gradient(circle at 15% 20%, var(--embed-accent, #f97316), transparent 30%),
+    radial-gradient(circle at 85% 20%, var(--embed-primary, #8b5cf6), transparent 32%),
+    radial-gradient(circle at 50% 85%, var(--embed-secondary, #06b6d4), transparent 34%),
+    linear-gradient(135deg, #020617, #111827);
+  animation-duration: var(--embed-duration, 10s);
+}
