@@ -17,6 +17,9 @@ export default function HomePage() {
             <a href="/explore" className="hover:text-white">
               Explore
             </a>
+            <a href="/create" className="hover:text-white">
+              Create
+            </a>
             <a href="#how-it-works" className="hover:text-white">
               How it works
             </a>
@@ -25,9 +28,12 @@ export default function HomePage() {
             </a>
           </div>
 
-          <button className="rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/10">
-            Get Started
-          </button>
+            <a
+              href="/create"
+              className="rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/10"
+            >
+              Get Started
+            </a>
         </nav>
 
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center">

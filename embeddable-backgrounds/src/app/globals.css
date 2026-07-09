@@ -395,3 +395,143 @@ body {
     filter: saturate(1.25);
   }
 }
+
+/* Custom Background Builder Preview Classes */
+
+.custom-bg-aurora {
+  background:
+    radial-gradient(circle at 20% 20%, var(--embed-primary, #8b5cf6), transparent 30%),
+    radial-gradient(circle at 80% 30%, var(--embed-secondary, #06b6d4), transparent 35%),
+    radial-gradient(circle at 50% 80%, var(--embed-accent, #ec4899), transparent 35%),
+    #020617;
+  animation: customPreviewAurora var(--embed-duration, 10s) ease-in-out infinite alternate;
+}
+
+@keyframes customPreviewAurora {
+  from {
+    transform: scale(1);
+    filter: hue-rotate(0deg);
+  }
+
+  to {
+    transform: scale(1.08);
+    filter: hue-rotate(45deg);
+  }
+}
+
+.custom-bg-mesh {
+  background:
+    radial-gradient(circle at 15% 20%, var(--embed-primary, #8b5cf6), transparent 30%),
+    radial-gradient(circle at 85% 25%, var(--embed-secondary, #06b6d4), transparent 32%),
+    radial-gradient(circle at 50% 85%, var(--embed-accent, #f97316), transparent 35%),
+    linear-gradient(135deg, #020617, #111827);
+  animation: customPreviewMesh var(--embed-duration, 10s) ease-in-out infinite alternate;
+}
+
+@keyframes customPreviewMesh {
+  from {
+    transform: scale(1);
+    filter: saturate(1);
+  }
+
+  to {
+    transform: scale(1.06);
+    filter: saturate(1.35);
+  }
+}
+
+.custom-bg-blobs {
+  background:
+    radial-gradient(circle at 25% 35%, var(--embed-primary, #fb7185), transparent 28%),
+    radial-gradient(circle at 75% 30%, var(--embed-secondary, #60a5fa), transparent 30%),
+    radial-gradient(circle at 50% 80%, var(--embed-accent, #34d399), transparent 35%),
+    #0f172a;
+  animation: customPreviewBlobs var(--embed-duration, 10s) ease-in-out infinite alternate;
+}
+
+@keyframes customPreviewBlobs {
+  from {
+    background-position: 0 0;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+
+  to {
+    background-position: 30px -30px;
+    transform: scale(1.06);
+    filter: blur(3px);
+  }
+}
+
+.custom-bg-grid {
+  background-color: #020617;
+  background-image:
+    linear-gradient(var(--embed-secondary, rgba(34, 211, 238, 0.3)) 1px, transparent 1px),
+    linear-gradient(90deg, var(--embed-secondary, rgba(34, 211, 238, 0.3)) 1px, transparent 1px),
+    radial-gradient(circle at center, var(--embed-primary, rgba(139, 92, 246, 0.45)), transparent 45%);
+  background-size: 40px 40px, 40px 40px, 100% 100%;
+  animation: customPreviewGrid var(--embed-duration, 10s) linear infinite;
+}
+
+@keyframes customPreviewGrid {
+  from {
+    background-position: 0 0, 0 0, center;
+  }
+
+  to {
+    background-position: 40px 40px, 40px 40px, center;
+  }
+}
+
+.custom-bg-waves {
+  background:
+    radial-gradient(circle at 20% 80%, var(--embed-primary, #0ea5e9), transparent 35%),
+    radial-gradient(circle at 80% 20%, var(--embed-secondary, #22d3ee), transparent 35%),
+    radial-gradient(circle at 50% 50%, var(--embed-accent, #2563eb), transparent 45%),
+    linear-gradient(135deg, #020617, #075985, #0f172a);
+  animation: customPreviewWaves var(--embed-duration, 12s) ease-in-out infinite alternate;
+}
+
+@keyframes customPreviewWaves {
+  from {
+    background-position: 0 0;
+    transform: scale(1);
+  }
+
+  to {
+    background-position: 50px -50px;
+    transform: scale(1.07);
+  }
+}
+
+.custom-bg-stars {
+  background-color: #020617;
+  background-image:
+    radial-gradient(circle, var(--embed-primary, rgba(255, 255, 255, 0.9)) 1px, transparent 1px),
+    radial-gradient(circle, var(--embed-secondary, rgba(255, 255, 255, 0.6)) 1px, transparent 1px),
+    radial-gradient(circle at center, var(--embed-accent, rgba(59, 130, 246, 0.5)), transparent 55%);
+  background-size: 24px 24px, 60px 60px, 100% 100%;
+  background-position: 0 0, 20px 30px, center;
+  animation: customPreviewStars var(--embed-duration, 16s) linear infinite;
+}
+
+@keyframes customPreviewStars {
+  from {
+    background-position: 0 0, 20px 30px, center;
+  }
+
+  to {
+    background-position: 100px 100px, 140px 160px, center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-bg-aurora,
+  .custom-bg-mesh,
+  .custom-bg-blobs,
+  .custom-bg-grid,
+  .custom-bg-waves,
+  .custom-bg-stars {
+    animation: none !important;
+  }
+}
