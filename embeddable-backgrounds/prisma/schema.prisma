@@ -1,0 +1,24 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Background {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  type        String   @default("css")
+  category    String
+  tags        String
+  access      String   @default("free")
+  cssClass    String
+  previewCss  String?
+  embedCss    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

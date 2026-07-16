@@ -10,6 +10,9 @@ export type Background = {
   tags: string[];
   access: "free" | "pro";
   cssClass: string;
+  previewCss?: string | null;
+  embedCss?: string | null;
+  createdAt?: Date | string;
 };
 
 export const backgrounds: Background[] = [
