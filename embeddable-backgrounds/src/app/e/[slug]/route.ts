@@ -13,7 +13,7 @@ type CssRouteProps = {
 
 export async function GET(request: Request, { params }: CssRouteProps) {
   const { slug } = await params;
-  const background = getBackgroundBySlug(slug);
+  const background = await getBackgroundBySlug(slug);
 
   if (!background) {
     return new Response("/* Background not found */", {

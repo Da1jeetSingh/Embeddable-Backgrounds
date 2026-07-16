@@ -15,7 +15,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: BackgroundPageProps) {
   const { slug } = await params;
-  const background = getBackgroundBySlug(slug);
+  const background = await getBackgroundBySlug(slug);
 
   if (!background) {
     return {
@@ -33,7 +33,7 @@ export default async function BackgroundDetailPage({
   params,
 }: BackgroundPageProps) {
   const { slug } = await params;
-  const background = getBackgroundBySlug(slug);
+  const background = await getBackgroundBySlug(slug);
 
   if (!background) {
     notFound();

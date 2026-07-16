@@ -21,7 +21,7 @@ export default async function EmbedPage({
   searchParams,
 }: EmbedPageProps) {
   const { slug } = await params;
-  const background = getBackgroundBySlug(slug);
+  const background = await getBackgroundBySlug(slug);
 
   if (!background) {
     notFound();
