@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
+import { requireAdmin } from "@/app/lib/auth";
 
 function slugify(value: string) {
   return value
@@ -10,6 +11,15 @@ function slugify(value: string) {
 }
 
 export async function GET() {
+  const admin = await requireAdmin();
+
+  if (!admin) {
+    return NextResponse.json(
+      { message: "Unauthorized. Please log in." },
+      { status: 401 }
+    );
+  }
+
   const backgrounds = await prisma.background.findMany({
     orderBy: {
       createdAt: "desc",
@@ -21,6 +31,15 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const admin = await requireAdmin();
+
+    if (!admin) {
+      return NextResponse.json(
+        { message: "Unauthorized. Please log in." },
+        { status: 401 }
+      );
+    }
+    
     const body = await request.json();
 
     const title = String(body.title || "").trim();
