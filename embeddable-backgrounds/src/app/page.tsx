@@ -1,7 +1,8 @@
 import BackgroundCard from "@/app/components/BackgroundCard";
-import { backgrounds } from "@/app/data/backgrounds";
+import { getAllBackgrounds } from "@/app/lib/backgrounds";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const backgrounds = await getAllBackgrounds();
   return (
     <main className="min-h-screen bg-slate-950">
       <section className="relative overflow-hidden border-b border-white/10">
@@ -92,7 +93,7 @@ export default function HomePage() {
                   </p>
 
                   <div className="mt-6 rounded-xl bg-white/10 p-3 text-xs text-slate-200">
-                    &lt;iframe src="/embed/neon-grid"&gt;
+                    &lt;iframe src=&quot;/embed/neon-grid&quot;&gt;
                   </div>
                 </div>
               </div>
