@@ -1,0 +1,44 @@
+import { NextResponse } from "next/server";
+import { prisma } from "@/app/lib/prisma";
+
+type RouteProps = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export async function DELETE(request: Request, { params }: RouteProps) {
+  try {
+    const { id } = await params;
+
+    const background = await prisma.background.findFirst({
+      where: {
+        OR: [{ id }, { slug: id }],
+      },
+    });
+
+    if (!background) {
+      return NextResponse.json(
+        { message: "Background not found." },
+        { status: 404 }
+      );
+    }
+
+    await prisma.background.delete({
+      where: {
+        id: background.id,
+      },
+    });
+
+    return NextResponse.json({
+      message: "Background deleted successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+
+    return NextResponse.json(
+      { message: "Something went wrong while deleting the background." },
+      { status: 500 }
+    );
+  }
+}
