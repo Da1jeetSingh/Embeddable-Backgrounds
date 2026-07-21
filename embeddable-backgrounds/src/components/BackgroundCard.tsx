@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Background } from "@/data/backgrounds";
 import { generateEmbedCode } from "@/lib/embed";
 import CopyButton from "./CopyButton";
+import FavoriteButton from "@/components/FavoriteButton";
 
 type BackgroundCardProps = {
   background: Background;
@@ -69,6 +70,8 @@ export default function BackgroundCard({ background }: BackgroundCardProps) {
           >
             Open Embed
           </Link>
+
+          <FavoriteButton backgroundId={background.id} />
 
           <CopyButton text={embedCode} />
         </div>

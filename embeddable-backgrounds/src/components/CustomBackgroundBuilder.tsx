@@ -26,6 +26,49 @@ export default function CustomBackgroundBuilder() {
     ...defaultBackgroundConfig,
   });
 
+  const [customName, setCustomName] = useState("My Custom Background");
+  const [saveMessage, setSaveMessage] = useState("");
+  const [isSavingCustom, setIsSavingCustom] = useState(false);
+
+  async function saveCustomBackground() {
+    try {
+      setIsSavingCustom(true);
+      setSaveMessage("");
+
+      const response = await fetch("/api/saved-custom-backgrounds", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: customName,
+          style,
+          speed: config.speed,
+          opacity: config.opacity,
+          primaryColor: config.primaryColor,
+          secondaryColor: config.secondaryColor,
+          accentColor: config.accentColor,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Could not save custom background.");
+      }
+
+      setSaveMessage(result.message);
+    } catch (error) {
+      setSaveMessage(
+        error instanceof Error
+          ? error.message
+          : "Could not save custom background."
+      );
+    } finally {
+      setIsSavingCustom(false);
+    }
+  }
+
   const queryString = useMemo(() => {
     return customBackgroundQueryString(style, config);
   }, [style, config]);
@@ -230,6 +273,32 @@ export default function CustomBackgroundBuilder() {
                 />
               </div>
             </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-300">
+                Save name
+              </label>
+
+              <input
+                value={customName}
+                onChange={(event) => setCustomName(event.target.value)}
+                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-violet-400"
+              />
+            </div>
+
+            <button
+              onClick={saveCustomBackground}
+              disabled={isSavingCustom}
+              className="w-full rounded-xl bg-violet-500 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {isSavingCustom ? "Saving..." : "Save Custom Background"}
+            </button>
+
+            {saveMessage && (
+              <p className="rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-slate-300">
+                {saveMessage}
+              </p>
+            )}
 
             <button
               onClick={resetBuilder}
