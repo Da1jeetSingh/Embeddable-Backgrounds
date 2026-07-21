@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/lib/prisma";
+import { requireAdmin } from "@/app/lib/auth";
 
 type RouteProps = {
   params: Promise<{
@@ -9,6 +10,15 @@ type RouteProps = {
 
 export async function DELETE(request: Request, { params }: RouteProps) {
   try {
+    const admin = await requireAdmin();
+
+    if (!admin) {
+      return NextResponse.json(
+        { message: "Unauthorized. Please log in." },
+        { status: 401 }
+      );
+    }
+
     const { id } = await params;
 
     const background = await prisma.background.findFirst({
