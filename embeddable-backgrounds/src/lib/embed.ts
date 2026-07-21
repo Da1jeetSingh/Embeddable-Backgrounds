@@ -1,6 +1,6 @@
-import type { Background } from "@/app/data/backgrounds";
-import type { BackgroundConfig } from "@/app/lib/customize";
-import { configToQueryString } from "@/app/lib/customize";
+import type { Background } from "@/data/backgrounds";
+import type { BackgroundConfig } from "@/lib/customize";
+import { configToQueryString } from "@/lib/customize";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 

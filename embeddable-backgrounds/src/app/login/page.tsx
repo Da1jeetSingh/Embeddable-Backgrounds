@@ -1,5 +1,5 @@
 import Link from "next/link";
-import LoginForm from "@/app/components/LoginForm";
+import LoginForm from "@/components/LoginForm";
 
 type LoginPageProps = {
   searchParams?: Promise<{

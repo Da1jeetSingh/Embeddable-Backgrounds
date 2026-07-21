@@ -1,9 +1,9 @@
-import { getBackgroundBySlug } from "@/app/lib/backgrounds";
-import { getEmbedBackgroundCss } from "@/app/lib/background-css";
+import { getBackgroundBySlug } from "@/lib/backgrounds";
+import { getEmbedBackgroundCss } from "@/lib/background-css";
 import {
   getAnimationDuration,
   normalizeBackgroundConfig,
-} from "@/app/lib/customize";
+} from "@/lib/customize";
 
 type CssRouteProps = {
   params: Promise<{

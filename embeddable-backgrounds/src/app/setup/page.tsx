@@ -1,5 +1,5 @@
 import Link from "next/link";
-import SetupAdminForm from "@/app/components/SetupAdminForm";
+import SetupAdminForm from "@/components/SetupAdminForm";
 
 export const metadata = {
   title: "Setup Admin - EmbedBG",

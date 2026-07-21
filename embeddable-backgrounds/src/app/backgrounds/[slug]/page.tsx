@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAllBackgroundSlugs, getBackgroundBySlug } from "@/app/lib/backgrounds";
-import BackgroundCustomizer from "@/app/components/BackgroundCustomizer";
+import { getAllBackgroundSlugs, getBackgroundBySlug } from "@/lib/backgrounds";
+import BackgroundCustomizer from "@/components/BackgroundCustomizer";
 
 type BackgroundPageProps = {
   params: Promise<{

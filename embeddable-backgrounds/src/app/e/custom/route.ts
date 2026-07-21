@@ -1,11 +1,11 @@
 import {
   getAnimationDuration,
   normalizeBackgroundConfig,
-} from "@/app/lib/customize";
+} from "@/lib/customize";
 import {
   getCustomBackgroundCss,
   normalizeCustomBackgroundStyle,
-} from "@/app/lib/custom-background";
+} from "@/lib/custom-background";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);

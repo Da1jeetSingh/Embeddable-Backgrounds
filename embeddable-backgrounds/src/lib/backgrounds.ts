@@ -1,7 +1,7 @@
 import type { Background as PrismaBackground } from "@prisma/client";
-import { backgrounds as fallbackBackgrounds, type Background } from "@/app/data/backgrounds";
-import { backgroundCssMap } from "@/app/lib/background-css";
-import { prisma } from "@/app/lib/prisma";
+import { backgrounds as fallbackBackgrounds, type Background } from "@/data/backgrounds";
+import { backgroundCssMap } from "@/lib/background-css";
+import { prisma } from "@/lib/prisma";
 
 function mapDbBackground(background: PrismaBackground): Background {
   return {

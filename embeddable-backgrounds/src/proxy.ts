@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { SESSION_COOKIE_NAME, verifySessionToken } from "@/app/lib/session";
+import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/session";
 
 export async function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname;

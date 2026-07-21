@@ -3,17 +3,8 @@ import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
 import { SESSION_COOKIE_NAME, signSessionToken } from "@/lib/session";
 
-export async function POST(request: Request) {
+export async function POST(request) {
   try {
-    const existingUsers = await prisma.user.count();
-
-    if (existingUsers > 0) {
-      return NextResponse.json(
-        { message: "Admin user already exists. Please log in." },
-        { status: 400 }
-      );
-    }
-
     const body = await request.json();
 
     const email = String(body.email || "").trim().toLowerCase();
@@ -34,6 +25,17 @@ export async function POST(request: Request) {
       );
     }
 
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { message: "An account with this email already exists." },
+        { status: 400 }
+      );
+    }
+
     const passwordHash = await hashPassword(password);
 
     const user = await prisma.user.create({
@@ -41,7 +43,7 @@ export async function POST(request: Request) {
         email,
         name,
         passwordHash,
-        role: "admin",
+        role: "user",
       },
     });
 
@@ -52,7 +54,7 @@ export async function POST(request: Request) {
     });
 
     const response = NextResponse.json({
-      message: "Admin account created successfully.",
+      message: "Account created successfully.",
       user: {
         id: user.id,
         email: user.email,
@@ -74,7 +76,7 @@ export async function POST(request: Request) {
     console.error(error);
 
     return NextResponse.json(
-      { message: "Something went wrong while creating admin account." },
+      { message: "Something went wrong while creating your account." },
       { status: 500 }
     );
   }

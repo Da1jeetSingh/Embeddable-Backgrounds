@@ -1,6 +1,6 @@
 import Link from "next/link";
-import type { Background } from "@/app/data/backgrounds";
-import { generateEmbedCode } from "@/app/lib/embed";
+import type { Background } from "@/data/backgrounds";
+import { generateEmbedCode } from "@/lib/embed";
 import CopyButton from "./CopyButton";
 
 type BackgroundCardProps = {

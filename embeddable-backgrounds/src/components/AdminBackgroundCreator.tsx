@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import CopyButton from "@/app/components/CopyButton";
+import CopyButton from "@/components/CopyButton";
 
 type AccessType = "free" | "pro";
 

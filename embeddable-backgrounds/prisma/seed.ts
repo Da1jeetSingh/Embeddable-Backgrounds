@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { backgrounds } from "../src/app/data/backgrounds";
-import { backgroundCssMap } from "../src/app/lib/background-css";
+import { backgrounds } from "../src/data/backgrounds";
+import { backgroundCssMap } from "../src/lib/background-css";
 
 const prisma = new PrismaClient();
 

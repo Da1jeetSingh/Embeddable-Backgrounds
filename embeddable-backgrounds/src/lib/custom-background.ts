@@ -1,5 +1,5 @@
-import type { BackgroundConfig } from "@/app/lib/customize";
-import { configToQueryString } from "@/app/lib/customize";
+import type { BackgroundConfig } from "@/lib/customize";
+import { configToQueryString } from "@/lib/customize";
 
 export type CustomBackgroundStyle =
   | "aurora"

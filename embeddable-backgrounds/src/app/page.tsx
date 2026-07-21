@@ -1,5 +1,5 @@
-import BackgroundCard from "@/app/components/BackgroundCard";
-import { getAllBackgrounds } from "@/app/lib/backgrounds";
+import BackgroundCard from "@/components/BackgroundCard";
+import { getAllBackgrounds } from "@/lib/backgrounds";
 
 export default async function HomePage() {
   const backgrounds = await getAllBackgrounds();

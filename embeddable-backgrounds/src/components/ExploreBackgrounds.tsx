@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { Background } from "@/app/data/backgrounds";
-import BackgroundCard from "@/app/components/BackgroundCard";
+import type { Background } from "@/data/backgrounds";
+import BackgroundCard from "@/components/BackgroundCard";
 
 type ExploreBackgroundsProps = {
   backgrounds: Background[];

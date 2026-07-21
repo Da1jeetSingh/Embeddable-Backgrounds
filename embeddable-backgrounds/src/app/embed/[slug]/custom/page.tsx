@@ -1,8 +1,8 @@
 import {
   configToStyle,
   normalizeBackgroundConfig,
-} from "@/app/lib/customize";
-import { normalizeCustomBackgroundStyle } from "@/app/lib/custom-background";
+} from "@/lib/customize";
+import { normalizeCustomBackgroundStyle } from "@/lib/custom-background";
 
 type CustomEmbedPageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;

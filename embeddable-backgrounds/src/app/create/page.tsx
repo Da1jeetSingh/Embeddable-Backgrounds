@@ -1,5 +1,5 @@
 import Link from "next/link";
-import CustomBackgroundBuilder from "@/app/components/CustomBackgroundBuilder";
+import CustomBackgroundBuilder from "@/components/CustomBackgroundBuilder";
 
 export const metadata = {
   title: "Create Your Own Background - EmbedBG",

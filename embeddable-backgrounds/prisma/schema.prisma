@@ -21,6 +21,8 @@ model Background {
   embedCss    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  favorites   Favorite[]
 }
 
 model User {
@@ -28,7 +30,37 @@ model User {
   email        String   @unique
   name         String?
   passwordHash String
-  role         String   @default("admin")
+  role         String   @default("user")
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  favorites              Favorite[]
+  savedCustomBackgrounds SavedCustomBackground[]
+}
+
+model Favorite {
+  userId       String
+  backgroundId String
+  createdAt    DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  background Background @relation(fields: [backgroundId], references: [id], onDelete: Cascade)
+
+  @@id([userId, backgroundId])
+}
+
+model SavedCustomBackground {
+  id             String   @id @default(cuid())
+  userId         String
+  name           String
+  style          String
+  speed          String
+  opacity        Float
+  primaryColor   String
+  secondaryColor String
+  accentColor    String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -2,48 +2,40 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import CopyButton from "@/app/components/CopyButton";
+import type { Background } from "@/data/backgrounds";
 import {
-  configToStyle,
   defaultBackgroundConfig,
   type BackgroundConfig,
-} from "@/app/lib/customize";
+  configToStyle,
+} from "@/lib/customize";
 import {
-  customBackgroundQueryString,
-  customBackgroundStyles,
-  defaultCustomBackgroundStyle,
-  type CustomBackgroundStyle,
-} from "@/app/lib/custom-background";
+  generateCssEmbedCode,
+  generateIframeEmbedCode,
+} from "@/lib/embed";
+import CopyButton from "@/components/CopyButton";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+type BackgroundCustomizerProps = {
+  background: Background;
+};
 
-export default function CustomBackgroundBuilder() {
-  const [style, setStyle] = useState<CustomBackgroundStyle>(
-    defaultCustomBackgroundStyle
+export default function BackgroundCustomizer({
+  background,
+}: BackgroundCustomizerProps) {
+  const [config, setConfig] = useState<BackgroundConfig>(
+    defaultBackgroundConfig
   );
-
-  const [config, setConfig] = useState<BackgroundConfig>({
-    ...defaultBackgroundConfig,
-  });
-
-  const queryString = useMemo(() => {
-    return customBackgroundQueryString(style, config);
-  }, [style, config]);
 
   const previewStyle = useMemo(() => {
     return configToStyle(config);
   }, [config]);
 
-  const iframeUrl = `${BASE_URL}/embed/custom?${queryString}`;
-  const cssUrl = `${BASE_URL}/e/custom?${queryString}`;
+  const iframeCode = useMemo(() => {
+    return generateIframeEmbedCode(background, config);
+  }, [background, config]);
 
-  const iframeCode = `<iframe
-  src="${iframeUrl}"
-  style="position:fixed;inset:0;width:100%;height:100%;border:0;z-index:-1;pointer-events:none;"
-  aria-hidden="true">
-</iframe>`;
-
-  const cssCode = `<link rel="stylesheet" href="${cssUrl}">`;
+  const cssCode = useMemo(() => {
+    return generateCssEmbedCode(background, config);
+  }, [background, config]);
 
   function updateConfig<Key extends keyof BackgroundConfig>(
     key: Key,
@@ -55,41 +47,42 @@ export default function CustomBackgroundBuilder() {
     }));
   }
 
-  function resetBuilder() {
-    setStyle(defaultCustomBackgroundStyle);
-    setConfig({ ...defaultBackgroundConfig });
+  function resetConfig() {
+    setConfig(defaultBackgroundConfig);
   }
 
   return (
-    <section className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[1.35fr_1fr]">
+    <section className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[1.4fr_1fr]">
       <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-4">
-        <div className="relative h-[650px] overflow-hidden rounded-2xl">
+        <div className="relative h-[600px] overflow-hidden rounded-2xl">
+          {background.previewCss && <style>{background.previewCss}</style>}
+
           <div
-            className={`absolute inset-0 custom-bg-${style}`}
+            className={`absolute inset-0 ${background.cssClass}`}
             style={previewStyle}
           />
 
           <div className="absolute inset-0 flex items-center justify-center p-8">
             <div className="max-w-md rounded-3xl border border-white/10 bg-black/40 p-8 text-center backdrop-blur-xl">
               <p className="text-sm uppercase tracking-[0.3em] text-violet-300">
-                Custom Background
+                Custom Preview
               </p>
 
               <h1 className="mt-4 text-4xl font-bold text-white">
-                Build your own
+                {background.title}
               </h1>
 
               <p className="mt-4 text-slate-300">
-                Pick a style, choose your colors, then copy the generated embed
+                Change the settings on the right and copy your custom embed
                 code.
               </p>
 
               <Link
-                href={`/embed/custom?${queryString}`}
+                href={`/embed/${background.slug}`}
                 target="_blank"
                 className="mt-6 inline-flex rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
               >
-                Open Custom Embed
+                Open Default Embed
               </Link>
             </div>
           </div>
@@ -99,46 +92,18 @@ export default function CustomBackgroundBuilder() {
       <aside className="space-y-6">
         <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-violet-300">
-            Builder
+            Customize
           </p>
 
           <h2 className="mt-3 text-3xl font-bold text-white">
-            Create background
+            {background.title}
           </h2>
 
           <p className="mt-3 text-sm leading-6 text-slate-400">
-            This creates a custom URL using query parameters. No database is
-            needed yet.
+            Adjust the background and copy the generated embed code.
           </p>
 
           <div className="mt-6 space-y-5">
-            <div>
-              <label className="mb-2 block text-sm font-medium text-slate-300">
-                Background style
-              </label>
-
-              <select
-                value={style}
-                onChange={(event) =>
-                  setStyle(event.target.value as CustomBackgroundStyle)
-                }
-                className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none focus:border-violet-400"
-              >
-                {customBackgroundStyles.map((item) => (
-                  <option key={item.value} value={item.value}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
-
-              <p className="mt-2 text-xs text-slate-500">
-                {
-                  customBackgroundStyles.find((item) => item.value === style)
-                    ?.description
-                }
-              </p>
-            </div>
-
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-300">
                 Speed
@@ -232,10 +197,10 @@ export default function CustomBackgroundBuilder() {
             </div>
 
             <button
-              onClick={resetBuilder}
+              onClick={resetConfig}
               className="w-full rounded-xl border border-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/10"
             >
-              Reset Builder
+              Reset Customization
             </button>
           </div>
         </div>
@@ -244,7 +209,7 @@ export default function CustomBackgroundBuilder() {
           <h2 className="text-xl font-semibold text-white">Iframe Embed</h2>
 
           <p className="mt-2 text-sm text-slate-400">
-            Best option for most users.
+            Recommended for most websites.
           </p>
 
           <pre className="mt-4 max-h-52 overflow-x-auto rounded-2xl bg-black/50 p-4 text-xs text-slate-300">

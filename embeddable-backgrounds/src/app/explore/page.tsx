@@ -1,6 +1,6 @@
 import Link from "next/link";
-import ExploreBackgrounds from "@/app/components/ExploreBackgrounds";
-import { getAllBackgrounds } from "@/app/lib/backgrounds";
+import ExploreBackgrounds from "@/components/ExploreBackgrounds";
+import { getAllBackgrounds } from "@/lib/backgrounds";
 
 export const metadata = {
   title: "Explore Backgrounds - EmbedBG",

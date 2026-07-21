@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
-import { getAllBackgroundSlugs, getBackgroundBySlug } from "@/app/lib/backgrounds";
+import { getAllBackgroundSlugs, getBackgroundBySlug } from "@/lib/backgrounds";
 import {
   configToStyle,
   normalizeBackgroundConfig,
-} from "@/app/lib/customize";
+} from "@/lib/customize";
 
 type EmbedPageProps = {
   params: Promise<{

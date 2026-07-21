@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import AdminBackgroundCreator from "@/app/components/AdminBackgroundCreator";
-import { requireAdmin } from "@/app/lib/auth";
+import AdminBackgroundCreator from "@/components/AdminBackgroundCreator";
+import { requireAdmin } from "@/lib/auth";
 
 export const metadata = {
   title: "Admin - EmbedBG",

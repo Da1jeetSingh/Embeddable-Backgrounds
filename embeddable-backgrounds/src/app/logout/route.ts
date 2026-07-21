@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { SESSION_COOKIE_NAME } from "@/app/lib/session";
+import { SESSION_COOKIE_NAME } from "@/lib/session";
 
 export async function GET(request: Request) {
   const response = NextResponse.redirect(new URL("/login", request.url));

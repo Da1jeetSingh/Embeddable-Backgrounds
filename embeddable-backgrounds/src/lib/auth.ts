@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import bcrypt from "bcryptjs";
-import { prisma } from "@/app/lib/prisma";
-import { SESSION_COOKIE_NAME, verifySessionToken } from "@/app/lib/session";
+import { prisma } from "@/lib/prisma";
+import { SESSION_COOKIE_NAME, verifySessionToken } from "@/lib/session";
 
 export async function hashPassword(password: string) {
   return bcrypt.hash(password, 12);
