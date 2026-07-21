@@ -9,7 +9,7 @@ type BackgroundPageProps = {
   }>;
 };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   return getAllBackgroundSlugs();
 }
 

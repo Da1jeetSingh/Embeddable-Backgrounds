@@ -24,7 +24,7 @@ export async function GET(request: Request, { params }: CssRouteProps) {
     });
   }
 
-  const css = getEmbedBackgroundCss(slug);
+  const css = background.embedCss || getEmbedBackgroundCss(slug);
 
   if (!css) {
     return new Response("/* CSS not available for this background */", {

@@ -14,6 +14,8 @@ export default function BackgroundCard({ background }: BackgroundCardProps) {
     <article className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/20">
       <Link href={`/backgrounds/${background.slug}`}>
         <div className="relative h-56 overflow-hidden">
+          {background.previewCss && <style>{background.previewCss}</style>}
+          
           <div className={`absolute inset-0 ${background.cssClass}`} />
 
           <div className="absolute inset-0 bg-black/10" />

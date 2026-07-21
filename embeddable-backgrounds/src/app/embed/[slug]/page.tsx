@@ -32,6 +32,7 @@ export default async function EmbedPage({
 
   return (
     <main className="fixed inset-0 h-screen w-screen overflow-hidden bg-slate-950">
+      {background.previewCss && <style>{background.previewCss}</style>}
       <div
         className={`absolute inset-0 ${background.cssClass}`}
         style={configToStyle(config)}
