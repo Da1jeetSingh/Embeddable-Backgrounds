@@ -65,13 +65,48 @@ export async function POST(request: Request) {
       );
     }
 
-    const existingBackground = await prisma.background.findUnique({
+    const existingBackgroundBySlug = await prisma.background.findUnique({
       where: {
         slug,
       },
     });
 
-    const background = existingBackground
+    const existingBackgroundById = body.id
+      ? await prisma.background.findUnique({
+          where: {
+            id: String(body.id),
+          },
+        })
+      : null;
+
+    if (existingBackgroundById && existingBackgroundBySlug) {
+      if (existingBackgroundById.id !== existingBackgroundBySlug.id) {
+        return NextResponse.json(
+          { message: "Slug is already used by another background." },
+          { status: 409 }
+        );
+      }
+    }
+
+    const background = existingBackgroundById
+      ? await prisma.background.update({
+          where: {
+            id: existingBackgroundById.id,
+          },
+          data: {
+            slug,
+            title,
+            description,
+            type: "css",
+            category,
+            tags,
+            access,
+            cssClass,
+            previewCss,
+            embedCss,
+          },
+        })
+      : existingBackgroundBySlug
       ? await prisma.background.update({
           where: {
             slug,
@@ -104,14 +139,16 @@ export async function POST(request: Request) {
           },
         });
 
+    const isUpdate = Boolean(existingBackgroundById || existingBackgroundBySlug);
+
     return NextResponse.json(
       {
-        message: existingBackground
+        message: isUpdate
           ? "Background updated successfully."
           : "Background created successfully.",
         background,
       },
-      { status: existingBackground ? 200 : 201 }
+      { status: isUpdate ? 200 : 201 }
     );
   } catch (error) {
     console.error(error);
