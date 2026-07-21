@@ -24,11 +24,14 @@ export default async function HomePage() {
             <a href="/admin" className="hover:text-white">
               Admin
             </a>
-            <a href="#how-it-works" className="hover:text-white">
-              How it works
+            <a href="/account" className="hover:text-white">
+              Account
             </a>
-            <a href="#docs" className="hover:text-white">
-              Docs
+            <a href="/login" className="hover:text-white">
+              Login
+            </a>
+            <a href="/signup" className="hover:text-white">
+              Signup
             </a>
           </div>
 
