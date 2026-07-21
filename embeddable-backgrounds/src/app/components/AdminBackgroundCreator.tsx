@@ -77,6 +77,8 @@ export default function AdminBackgroundCreator() {
   const [access, setAccess] = useState<AccessType>("free");
   const [previewCss, setPreviewCss] = useState(defaultPreviewCss);
   const [embedCss, setEmbedCss] = useState(defaultEmbedCss);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState("");
 
   const cssClass = toCssClass(slug);
 
@@ -129,6 +131,53 @@ ${embedCssCode}`;
     }
   }
 
+  async function saveToDatabase() {
+    try {
+      setIsSaving(true);
+      setSaveMessage("");
+
+      const tagArray = tags
+        .split(",")
+        .map((tag) => tag.trim())
+        .filter(Boolean);
+
+      const response = await fetch("/api/admin/backgrounds", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          title,
+          slug,
+          description,
+          category,
+          tags: tagArray,
+          access,
+          cssClass,
+          previewCss: previewCssCode,
+          embedCss,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Could not save background.");
+      }
+
+      setSaveMessage(result.message);
+    } catch (error) {
+      setSaveMessage(
+        error instanceof Error
+          ? error.message
+          : "Could not save background."
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
   return (
     <section className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[1fr_1fr]">
       <div className="space-y-6">
@@ -142,8 +191,7 @@ ${embedCssCode}`;
           </h1>
 
           <p className="mt-3 text-sm leading-6 text-slate-400">
-            Fill this form, copy the generated code, and paste it into your
-            project files.
+            Fill this form and save the background directly into your database.
           </p>
 
           <div className="mt-6 grid gap-4">
@@ -244,6 +292,22 @@ ${embedCssCode}`;
               <p className="mt-2 text-xs text-slate-500">
                 Separate tags with commas.
               </p>
+              
+              <div className="mt-4 flex flex-col items-start gap-2">
+                <button
+                  onClick={saveToDatabase}
+                  disabled={isSaving}
+                  className="rounded-2xl bg-violet-500 px-5 py-3 text-sm font-semibold text-white hover:bg-violet-400 disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {isSaving ? "Saving..." : "Save to Database"}
+                </button>
+
+                {saveMessage && (
+                  <p className="rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-slate-300">
+                    {saveMessage}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>

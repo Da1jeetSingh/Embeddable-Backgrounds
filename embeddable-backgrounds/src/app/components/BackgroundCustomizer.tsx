@@ -55,6 +55,8 @@ export default function BackgroundCustomizer({
     <section className="mx-auto grid max-w-7xl gap-8 px-6 py-10 lg:grid-cols-[1.4fr_1fr]">
       <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-4">
         <div className="relative h-[600px] overflow-hidden rounded-2xl">
+          {background.previewCss && <style>{background.previewCss}</style>}
+
           <div
             className={`absolute inset-0 ${background.cssClass}`}
             style={previewStyle}
