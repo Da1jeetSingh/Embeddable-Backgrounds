@@ -1,6 +1,9 @@
 import Link from "next/link";
 import ExploreBackgrounds from "@/components/ExploreBackgrounds";
 import { getAllBackgrounds } from "@/lib/backgrounds";
+import Navbar from "@/components/Navbar";
+import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
   title: "Explore Backgrounds - EmbedBG",
@@ -9,16 +12,28 @@ export const metadata = {
 
 export default async function ExplorePage() {
   const backgrounds = await getAllBackgrounds();
+  const user = await getCurrentUser();
+
+  const favorites = user
+    ? await prisma.favorite.findMany({
+        where: {
+          userId: user.id,
+        },
+        select: {
+          backgroundId: true,
+        },
+      })
+    : [];
+
+  const favoriteBackgroundIds = favorites.map((favorite) => favorite.backgroundId);
 
   return (
     <main className="min-h-screen bg-slate-950 text-white">
-      <section className="border-b border-white/10 bg-white/[0.03]">
-        <div className="mx-auto max-w-7xl px-6 py-12">
-          <a href="/" className="text-2xl font-bold text-white">
-            Embed<span className="text-violet-400">BG</span>
-          </a>
+      <Navbar />
 
-          <div className="mt-12 max-w-3xl">
+      <section className="border-y border-white/10 bg-white/[0.03]">
+        <div className="mx-auto max-w-7xl px-6 py-12">
+          <div className="mt-4 max-w-3xl">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-violet-300">
               Explore Library
             </p>
@@ -35,7 +50,10 @@ export default async function ExplorePage() {
         </div>
       </section>
 
-      <ExploreBackgrounds backgrounds={backgrounds} />
+      <ExploreBackgrounds
+        backgrounds={backgrounds}
+        favoriteBackgroundIds={favoriteBackgroundIds}
+      />
     </main>
   );
 }

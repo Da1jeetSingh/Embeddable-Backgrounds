@@ -1,47 +1,35 @@
 import BackgroundCard from "@/components/BackgroundCard";
 import { getAllBackgrounds } from "@/lib/backgrounds";
+import Navbar from "@/components/Navbar";
+import { getCurrentUser } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
 
 export default async function HomePage() {
   const backgrounds = await getAllBackgrounds();
+  const user = await getCurrentUser();
+
+  const favorites = user
+    ? await prisma.favorite.findMany({
+        where: {
+          userId: user.id,
+        },
+        select: {
+          backgroundId: true,
+        },
+      })
+    : [];
+
+  const favoriteBackgroundIds = favorites.map((favorite) => favorite.backgroundId);
+
   return (
     <main className="min-h-screen bg-slate-950">
       <section className="relative overflow-hidden border-b border-white/10">
         <div className="absolute inset-0 bg-aurora-glow opacity-40" />
         <div className="absolute inset-0 bg-slate-950/70" />
 
-        <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
-          <div className="text-2xl font-bold text-white">
-            Embed<span className="text-violet-400">BG</span>
-          </div>
-
-          <div className="hidden items-center gap-6 text-sm text-slate-300 md:flex">
-            <a href="/explore" className="hover:text-white">
-              Explore
-            </a>
-            <a href="/create" className="hover:text-white">
-              Create
-            </a>
-            <a href="/admin" className="hover:text-white">
-              Admin
-            </a>
-            <a href="/account" className="hover:text-white">
-              Account
-            </a>
-            <a href="/login" className="hover:text-white">
-              Login
-            </a>
-            <a href="/signup" className="hover:text-white">
-              Signup
-            </a>
-          </div>
-
-            <a
-              href="/create"
-              className="rounded-full border border-white/10 px-4 py-2 text-sm font-medium text-white hover:bg-white/10"
-            >
-              Get Started
-            </a>
-        </nav>
+        <div className="relative z-10">
+          <Navbar />
+        </div>
 
         <div className="relative z-10 mx-auto grid max-w-7xl gap-12 px-6 py-20 md:grid-cols-2 md:items-center">
           <div>
@@ -129,7 +117,11 @@ export default async function HomePage() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {backgrounds.map((background) => (
-            <BackgroundCard key={background.id} background={background} />
+            <BackgroundCard 
+              key={background.id} 
+              background={background} 
+              isFavorite={favoriteBackgroundIds.includes(background.id)} 
+            />
           ))}
         </div>
       </section>

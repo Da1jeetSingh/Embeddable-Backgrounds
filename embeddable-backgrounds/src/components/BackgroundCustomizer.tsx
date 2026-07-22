@@ -13,13 +13,16 @@ import {
   generateIframeEmbedCode,
 } from "@/lib/embed";
 import CopyButton from "@/components/CopyButton";
+import FavoriteButton from "@/components/FavoriteButton";
 
 type BackgroundCustomizerProps = {
   background: Background;
+  isFavorite?: boolean;
 };
 
 export default function BackgroundCustomizer({
   background,
+  isFavorite = false,
 }: BackgroundCustomizerProps) {
   const [config, setConfig] = useState<BackgroundConfig>(
     defaultBackgroundConfig
@@ -102,6 +105,13 @@ export default function BackgroundCustomizer({
           <p className="mt-3 text-sm leading-6 text-slate-400">
             Adjust the background and copy the generated embed code.
           </p>
+
+          <div className="mt-5">
+            <FavoriteButton
+              backgroundId={background.id}
+              initialIsFavorite={isFavorite}
+            />
+          </div>
 
           <div className="mt-6 space-y-5">
             <div>

@@ -4,11 +4,15 @@ import { useState } from "react";
 
 type FavoriteButtonProps = {
   backgroundId: string;
+  initialIsFavorite?: boolean;
 };
 
-export default function FavoriteButton({ backgroundId }: FavoriteButtonProps) {
+export default function FavoriteButton({
+  backgroundId,
+  initialIsFavorite = false,
+}: FavoriteButtonProps) {
   const [message, setMessage] = useState("");
-  const [isFavorite, setIsFavorite] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(initialIsFavorite);
   const [isSaving, setIsSaving] = useState(false);
 
   async function toggleFavorite() {
@@ -48,7 +52,11 @@ export default function FavoriteButton({ backgroundId }: FavoriteButtonProps) {
       <button
         onClick={toggleFavorite}
         disabled={isSaving}
-        className="rounded-xl border border-pink-400/20 px-4 py-2 text-sm font-semibold text-pink-100 hover:bg-pink-400/10 disabled:cursor-not-allowed disabled:opacity-60"
+        className={
+          isFavorite
+            ? "rounded-xl border border-pink-400/30 bg-pink-400/10 px-4 py-2 text-sm font-semibold text-pink-100 hover:bg-pink-400/20 disabled:cursor-not-allowed disabled:opacity-60"
+            : "rounded-xl border border-pink-400/20 px-4 py-2 text-sm font-semibold text-pink-100 hover:bg-pink-400/10 disabled:cursor-not-allowed disabled:opacity-60"
+        }
       >
         {isSaving ? "Saving..." : isFavorite ? "Saved ♥" : "Favorite"}
       </button>

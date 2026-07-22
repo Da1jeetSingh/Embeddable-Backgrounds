@@ -6,9 +6,10 @@ import FavoriteButton from "@/components/FavoriteButton";
 
 type BackgroundCardProps = {
   background: Background;
+  isFavorite?: boolean;
 };
 
-export default function BackgroundCard({ background }: BackgroundCardProps) {
+export default function BackgroundCard({ background, isFavorite = false }: BackgroundCardProps) {
   const embedCode = generateEmbedCode(background);
 
   return (
@@ -71,7 +72,10 @@ export default function BackgroundCard({ background }: BackgroundCardProps) {
             Open Embed
           </Link>
 
-          <FavoriteButton backgroundId={background.id} />
+          <FavoriteButton 
+            backgroundId={background.id} 
+            initialIsFavorite={isFavorite}
+          />
 
           <CopyButton text={embedCode} />
         </div>

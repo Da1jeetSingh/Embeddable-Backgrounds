@@ -6,12 +6,14 @@ import BackgroundCard from "@/components/BackgroundCard";
 
 type ExploreBackgroundsProps = {
   backgrounds: Background[];
+  favoriteBackgroundIds?: string[];
 };
 
 type SortOption = "newest" | "name";
 
 export default function ExploreBackgrounds({
   backgrounds,
+  favoriteBackgroundIds = [],
 }: ExploreBackgroundsProps) {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -157,7 +159,11 @@ export default function ExploreBackgrounds({
       {filteredBackgrounds.length > 0 ? (
         <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {filteredBackgrounds.map((background) => (
-            <BackgroundCard key={background.id} background={background} />
+            <BackgroundCard 
+              key={background.id} 
+              background={background} 
+              isFavorite={favoriteBackgroundIds.includes(background.id)} 
+            />
           ))}
         </div>
       ) : (
