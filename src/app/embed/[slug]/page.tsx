@@ -34,7 +34,13 @@ export default async function EmbedPage({
   return (
     <main className="fixed inset-0 h-screen w-screen overflow-hidden bg-slate-950">
       {slug === "neural-network" ? (
-        <NeuralNetworkBackground />
+        <NeuralNetworkBackground
+          className="fixed inset-0 h-full w-full"
+          primaryColor={config.primaryColor}
+          secondaryColor={config.secondaryColor}
+          speed={config.speed}
+          opacity={config.opacity}
+        />
       ) : (
         <>
           {background.previewCss && <style>{background.previewCss}</style>}

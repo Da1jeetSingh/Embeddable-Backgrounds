@@ -14,6 +14,7 @@ import {
 } from "@/lib/embed";
 import CopyButton from "@/components/CopyButton";
 import FavoriteButton from "@/components/FavoriteButton";
+import NeuralNetworkBackground from "@/components/NeuralNetworkBackground";
 
 type BackgroundCustomizerProps = {
   background: Background;
@@ -60,10 +61,22 @@ export default function BackgroundCustomizer({
         <div className="relative h-[600px] overflow-hidden rounded-2xl">
           {background.previewCss && <style>{background.previewCss}</style>}
 
-          <div
-            className={`absolute inset-0 ${background.cssClass}`}
-            style={previewStyle}
-          />
+          {background.slug === "neural-network" ? (
+            <div className="absolute inset-0 pointer-events-none">
+              <NeuralNetworkBackground
+                className="w-full h-full"
+                primaryColor={config.primaryColor}
+                secondaryColor={config.secondaryColor}
+                speed={config.speed}
+                opacity={config.opacity}
+              />
+            </div>
+          ) : (
+            <div
+              className={`absolute inset-0 ${background.cssClass}`}
+              style={previewStyle}
+            />
+          )}
 
           <div className="absolute inset-0 flex items-center justify-center p-8">
             <div className="max-w-md rounded-3xl border border-white/10 bg-black/40 p-8 text-center backdrop-blur-xl">

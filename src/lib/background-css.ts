@@ -306,6 +306,28 @@ html::before {
   to { transform: scale(1.05); filter: saturate(1.25); }
 }
 `,
+
+  "neural-network": `
+html::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--embed-opacity, 1);
+  background-color: #0b192f;
+  background-image:
+    radial-gradient(circle at center, var(--embed-primary, rgba(255, 92, 92, 0.35)), transparent 55%),
+    radial-gradient(circle, var(--embed-secondary, rgba(255, 92, 92, 0.8)) 1.5px, transparent 1.5px);
+  background-size: 100% 100%, 36px 36px;
+  animation: embedbgNeuralMove var(--embed-duration, 10s) linear infinite;
+}
+
+@keyframes embedbgNeuralMove {
+  from { background-position: center, 0 0; }
+  to { background-position: center, 36px 36px; }
+}
+`,
 };
 
 export function getEmbedBackgroundCss(slug: string) {

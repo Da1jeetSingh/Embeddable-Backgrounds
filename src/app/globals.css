@@ -422,6 +422,27 @@ body {
   }
 }
 
+/* Background 14: Neural Network (CSS Fallback) */
+
+.bg-neural-network {
+  background-color: #0b192f;
+  background-image:
+    radial-gradient(circle at center, var(--embed-primary, rgba(255, 92, 92, 0.35)), transparent 55%),
+    radial-gradient(circle, var(--embed-secondary, rgba(255, 92, 92, 0.8)) 1.5px, transparent 1.5px);
+  background-size: 100% 100%, 36px 36px;
+  animation: neuralGridMove var(--embed-duration, 10s) linear infinite;
+}
+
+@keyframes neuralGridMove {
+  from {
+    background-position: center, 0 0;
+  }
+
+  to {
+    background-position: center, 36px 36px;
+  }
+}
+
 /* Custom Background Builder Preview Classes */
 
 .custom-bg-aurora {

@@ -3,6 +3,7 @@ import type { Background } from "@/data/backgrounds";
 import { generateEmbedCode } from "@/lib/embed";
 import CopyButton from "./CopyButton";
 import FavoriteButton from "@/components/FavoriteButton";
+import NeuralNetworkBackground from "@/components/NeuralNetworkBackground";
 
 type BackgroundCardProps = {
   background: Background;
@@ -18,7 +19,13 @@ export default function BackgroundCard({ background, isFavorite = false }: Backg
         <div className="relative h-56 overflow-hidden">
           {background.previewCss && <style>{background.previewCss}</style>}
           
-          <div className={`absolute inset-0 ${background.cssClass}`} />
+          {background.slug === "neural-network" ? (
+            <div className="absolute inset-0 pointer-events-none">
+              <NeuralNetworkBackground className="w-full h-full" />
+            </div>
+          ) : (
+            <div className={`absolute inset-0 ${background.cssClass}`} />
+          )}
 
           <div className="absolute inset-0 bg-black/10" />
 
