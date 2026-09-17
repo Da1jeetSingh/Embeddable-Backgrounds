@@ -8,6 +8,7 @@ type Particle = {
   vx: number;
   vy: number;
   radius: number;
+  glow: number;
 };
 
 export type NeuralNetworkBackgroundProps = {
@@ -64,6 +65,7 @@ export default function NeuralNetworkBackground({
 
     let animationFrame = 0;
     const particles: Particle[] = [];
+    const mouse = { x: -2000, y: -2000, active: false };
 
     const speedMultiplier =
       typeof speed === "number"
@@ -81,7 +83,7 @@ export default function NeuralNetworkBackground({
       const rect = container.getBoundingClientRect();
       const width = Math.max(rect.width, 100);
       const height = Math.max(rect.height, 100);
-      return { width, height };
+      return { width, height, rect };
     };
 
     const getParticleCount = (width: number, height: number) => {
@@ -104,6 +106,7 @@ export default function NeuralNetworkBackground({
           vx: (Math.random() - 0.5) * 0.45 * speedMultiplier,
           vy: (Math.random() - 0.5) * 0.45 * speedMultiplier,
           radius: Math.random() * 2.1 + 1.3,
+          glow: 0,
         });
       }
     };
@@ -121,13 +124,33 @@ export default function NeuralNetworkBackground({
       setupParticles(width, height);
     };
 
+    const handlePointerMove = (e: PointerEvent) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+        mouse.x = x;
+        mouse.y = y;
+        mouse.active = true;
+      } else {
+        mouse.active = false;
+      }
+    };
+
+    const handlePointerLeave = () => {
+      mouse.active = false;
+    };
+
     const draw = () => {
       const { width, height } = getDimensions();
       const isCard = width < 500 || height < 350;
       const connectDistance = isCard ? 90 : 140;
+      const mouseRadius = isCard ? 110 : 170;
 
       ctx.clearRect(0, 0, width, height);
 
+      // 1. Update particles & calculate star glow based on mouse distance
       for (let i = 0; i < particles.length; i += 1) {
         const particle = particles[i];
 
@@ -144,12 +167,33 @@ export default function NeuralNetworkBackground({
           particle.y = Math.max(0, Math.min(height, particle.y));
         }
 
-        ctx.beginPath();
-        ctx.fillStyle = `rgba(${pRgb[0]}, ${pRgb[1]}, ${pRgb[2]}, ${0.9 * opacity})`;
-        ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-        ctx.fill();
+        // Mouse proximity calculation
+        let targetGlow = 0;
+        if (mouse.active) {
+          const dx = particle.x - mouse.x;
+          const dy = particle.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < mouseRadius) {
+            // Strong quadratic falloff: very bright at core
+            targetGlow = Math.pow(1 - dist / mouseRadius, 1.4);
+
+            // Connect neuron to mouse cursor
+            const mouseLineAlpha = (1 - dist / mouseRadius) * 0.7 * opacity;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(${pRgb[0]}, ${pRgb[1]}, ${pRgb[2]}, ${mouseLineAlpha})`;
+            ctx.lineWidth = 1 + targetGlow * 1.2;
+            ctx.moveTo(particle.x, particle.y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+
+        // Smoothly interpolate glow for star flare transition
+        particle.glow += (targetGlow - particle.glow) * 0.2;
       }
 
+      // 2. Inter-particle connections
       for (let i = 0; i < particles.length; i += 1) {
         for (let j = i + 1; j < particles.length; j += 1) {
           const a = particles[i];
@@ -159,11 +203,19 @@ export default function NeuralNetworkBackground({
           const distance = Math.sqrt(dx * dx + dy * dy);
 
           if (distance < connectDistance) {
-            const lineOpacity = (1 - distance / connectDistance) * 0.55 * opacity;
+            const baseAlpha = (1 - distance / connectDistance) * 0.55 * opacity;
+            const glowBoost = Math.max(a.glow, b.glow);
+            const lineAlpha = Math.min(1, baseAlpha + glowBoost * 0.45);
 
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(${lRgb[0]}, ${lRgb[1]}, ${lRgb[2]}, ${lineOpacity})`;
-            ctx.lineWidth = 1;
+            if (glowBoost > 0.3) {
+              // Blend towards brighter tint when nodes are glowing
+              ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha * 0.8})`;
+              ctx.lineWidth = 1 + glowBoost * 1.5;
+            } else {
+              ctx.strokeStyle = `rgba(${lRgb[0]}, ${lRgb[1]}, ${lRgb[2]}, ${lineAlpha})`;
+              ctx.lineWidth = 1;
+            }
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
             ctx.stroke();
@@ -171,11 +223,69 @@ export default function NeuralNetworkBackground({
         }
       }
 
+      // 3. Render particles with radiant star bloom & flares
+      for (let i = 0; i < particles.length; i += 1) {
+        const particle = particles[i];
+        const glow = particle.glow;
+
+        if (glow > 0.03) {
+          // Radiant star bloom gradient
+          const bloomRadius = particle.radius * 3 + glow * 22;
+          const grad = ctx.createRadialGradient(
+            particle.x,
+            particle.y,
+            0,
+            particle.x,
+            particle.y,
+            bloomRadius
+          );
+          grad.addColorStop(0, `rgba(255, 255, 255, ${0.95 * opacity})`);
+          grad.addColorStop(0.2, `rgba(${pRgb[0]}, ${pRgb[1]}, ${pRgb[2]}, ${0.85 * opacity * glow})`);
+          grad.addColorStop(0.65, `rgba(${pRgb[0]}, ${pRgb[1]}, ${pRgb[2]}, ${0.25 * opacity * glow})`);
+          grad.addColorStop(1, `rgba(${pRgb[0]}, ${pRgb[1]}, ${pRgb[2]}, 0)`);
+
+          ctx.beginPath();
+          ctx.fillStyle = grad;
+          ctx.arc(particle.x, particle.y, bloomRadius, 0, Math.PI * 2);
+          ctx.fill();
+
+          // 4-pointed glittering star flare when directly near cursor
+          if (glow > 0.3) {
+            const flareSize = (glow - 0.3) * 18;
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(255, 255, 255, ${glow * 0.85 * opacity})`;
+            ctx.lineWidth = 1;
+            // Horizontal ray
+            ctx.moveTo(particle.x - flareSize, particle.y);
+            ctx.lineTo(particle.x + flareSize, particle.y);
+            // Vertical ray
+            ctx.moveTo(particle.x, particle.y - flareSize);
+            ctx.lineTo(particle.x, particle.y + flareSize);
+            ctx.stroke();
+          }
+        }
+
+        // Central core of the particle / star
+        ctx.beginPath();
+        const coreRadius = particle.radius + glow * 1.8;
+        if (glow > 0.15) {
+          // Bright white-hot star center
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, 0.9 + glow * 0.1) * opacity})`;
+        } else {
+          ctx.fillStyle = `rgba(${pRgb[0]}, ${pRgb[1]}, ${pRgb[2]}, ${0.9 * opacity})`;
+        }
+        ctx.arc(particle.x, particle.y, coreRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
       animationFrame = requestAnimationFrame(draw);
     };
 
     resizeCanvas();
     draw();
+
+    window.addEventListener("pointermove", handlePointerMove);
+    window.addEventListener("pointerleave", handlePointerLeave);
 
     let resizeObserver: ResizeObserver | null = null;
     if (typeof ResizeObserver !== "undefined") {
@@ -189,6 +299,8 @@ export default function NeuralNetworkBackground({
 
     return () => {
       cancelAnimationFrame(animationFrame);
+      window.removeEventListener("pointermove", handlePointerMove);
+      window.removeEventListener("pointerleave", handlePointerLeave);
       if (resizeObserver) {
         resizeObserver.disconnect();
       } else {
