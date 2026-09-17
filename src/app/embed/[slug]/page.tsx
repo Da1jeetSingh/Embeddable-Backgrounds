@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import NeuralNetworkBackground from "@/components/NeuralNetworkBackground";
 import { getAllBackgroundSlugs, getBackgroundBySlug } from "@/lib/backgrounds";
 import {
   configToStyle,
@@ -32,11 +33,17 @@ export default async function EmbedPage({
 
   return (
     <main className="fixed inset-0 h-screen w-screen overflow-hidden bg-slate-950">
-      {background.previewCss && <style>{background.previewCss}</style>}
-      <div
-        className={`absolute inset-0 ${background.cssClass}`}
-        style={configToStyle(config)}
-      />
+      {slug === "neural-network" ? (
+        <NeuralNetworkBackground />
+      ) : (
+        <>
+          {background.previewCss && <style>{background.previewCss}</style>}
+          <div
+            className={`absolute inset-0 ${background.cssClass}`}
+            style={configToStyle(config)}
+          />
+        </>
+      )}
     </main>
   );
 }

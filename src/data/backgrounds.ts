@@ -159,4 +159,15 @@ export const backgrounds: Background[] = [
     access: "free",
     cssClass: "bg-candy-sky",
   },
+  {
+    id: "14",
+    slug: "neural-network",
+    title: "Neural Network",
+    description: "An animated canvas-powered constellation of nodes and connecting synapses.",
+    type: "iframe",
+    category: "Tech",
+    tags: ["neural", "network", "animated"],
+    access: "pro",
+    cssClass: "bg-neural-network",
+  },
 ];
