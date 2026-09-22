@@ -10,6 +10,13 @@ function slugify(value: string) {
     .replace(/(^-|-$)+/g, "");
 }
 
+function sanitizeCss(css: string): string {
+  return css
+    .replace(/<\/style/gi, "<\\/style") // Prevent breaking out of <style> tags
+    .replace(/javascript\s*:/gi, "")     // Block javascript: URLs
+    .replace(/expression\s*\(/gi, "");   // Block legacy IE CSS expressions
+}
+
 export async function GET() {
   const admin = await requireAdmin();
 
@@ -49,8 +56,8 @@ export async function POST(request: Request) {
     const category = String(body.category || "Custom").trim();
     const access = body.access === "pro" ? "pro" : "free";
     const cssClass = String(body.cssClass || `bg-${slug}`).trim();
-    const previewCss = String(body.previewCss || "").trim();
-    const embedCss = String(body.embedCss || "").trim();
+    const previewCss = sanitizeCss(String(body.previewCss || "").trim());
+    const embedCss = sanitizeCss(String(body.embedCss || "").trim());
 
     const tags = Array.isArray(body.tags)
       ? body.tags.join(",")
