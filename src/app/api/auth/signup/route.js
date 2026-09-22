@@ -2,8 +2,18 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/lib/auth";
 import { SESSION_COOKIE_NAME, signSessionToken } from "@/lib/session";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(request) {
+  const ip = getClientIp(request);
+  const rateLimit = checkRateLimit(`signup:${ip}`, { windowMs: 10 * 60_000, max: 3 });
+  if (!rateLimit.success) {
+    return NextResponse.json(
+      { message: "Too many sign up requests from this IP. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = await request.json();
 
